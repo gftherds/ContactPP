@@ -1,36 +1,36 @@
 package com.example.therdsak.contectpp.DataBase;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.database.Cursor;
+import android.database.CursorWrapper;
 
-import com.example.therdsak.contectpp.DataBase.ContactDbSchema.ContactTable;
 import com.example.therdsak.contectpp.Model.Contact;
+import com.example.therdsak.contectpp.DataBase.ContactBaseHelper.ContactTable;
+
+import java.util.UUID;
 
 /**
  * Created by Therdsak on 8/9/2016.
  */
-public class ContactCursorWrapper  extends SQLiteOpenHelper{
-    private static final int VERSION = 1;
-    private static final String DATABASE_NAME ="DatabaseContact";
+public class ContactCursorWrapper extends CursorWrapper {
+
+    /**
+     *  It's poxy
+     */
+    public ContactCursorWrapper(Cursor cursor) {super(cursor);}
 
 
-    public ContactCursorWrapper(Context context) { super(context, DATABASE_NAME, null, VERSION);}
+    public Contact getContact(){
+        String uuidString = getString(getColumnIndex(ContactTable.Cols.UUID));
+        String name = getString(getColumnIndex(ContactTable.Cols.NAME));
+        String numberPhone = getString(getColumnIndex(ContactTable.Cols.NUMBER_PHONE));
+        String email = getString(getColumnIndex(ContactTable.Cols.EMAIL));
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + ContactTable.NAMEDB
-                + "("
-                + "_id integer primary key autoincrement, "
-                + ContactTable.Cols.UUID + ","
-                + ContactTable.Cols.NAME + ","
-                + ContactTable.Cols.NUMBER_PHONE + ","
-                + ContactTable.Cols.EMAIL + ")"
-        );
+        Contact contact = new Contact(UUID.fromString(uuidString));
+        contact.setContactName(name);
+        contact.setContactTelNumber(numberPhone);
+        contact.setContactEmail(email);
+
+        return contact;
     }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //
-    }
 }
