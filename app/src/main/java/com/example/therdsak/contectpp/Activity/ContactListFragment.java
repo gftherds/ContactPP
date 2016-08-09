@@ -36,17 +36,19 @@ public class ContactListFragment extends Fragment {
     private Callback callback;
 
     public interface Callback{
-
+        void  onContactSelect(Contact contact);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        callback = (Callback) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        callback = null;
     }
 
     private File photoFile;

@@ -1,7 +1,9 @@
 package com.example.therdsak.contectpp.Activity;
 
+import android.support.v4.app.Fragment;
+
 /**
  * Created by Therdsak on 8/9/2016.
  */
-public class ContactEditFragment {
+public class ContactEditFragment extends Fragment {
 }

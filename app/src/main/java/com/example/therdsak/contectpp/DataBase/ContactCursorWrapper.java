@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.database.CursorWrapper;
 
 import com.example.therdsak.contectpp.Model.Contact;
-import com.example.therdsak.contectpp.DataBase.ContactBaseHelper.ContactTable;
+import com.example.therdsak.contectpp.DataBase.ContactDbSchema.ContactTable;
 
 import java.util.UUID;
 
