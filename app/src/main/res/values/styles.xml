@@ -6,6 +6,26 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:buttonStyle">@style/delete</item>
+        <item name="android:imageButtonStyle">@style/camera</item>
+
+
+
     </style>
+
+    <style name="delete" parent="Base.Widget.AppCompat.Button">
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:background">@drawable/button_contact_normal</item>
+    </style>
+
+    <style name="camera" parent="Base.Widget.AppCompat.Button">
+        <item name="android:background">@drawable/button_contact_normal</item>
+
+    </style>
+
+
+
+
+
 
 </resources>
