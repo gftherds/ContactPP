@@ -3,10 +3,9 @@ package com.example.therdsak.contectpp.Model;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.therdsak.contectpp.DataBase.ContactCursorWrapper;
+import com.example.therdsak.contectpp.DataBase.ContactDbSchema;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,15 +36,15 @@ public class ContactLab {
         this.context = context.getApplicationContext();
     }
 
-    public ContactCursorWrapper queryCrimes(String whereClause, String[] whereArgs){
+    public ContactDbSchema queryCrimes(String whereClause, String[] whereArgs){
         Cursor cursor = database.query(null, null, whereClause, whereArgs,null,
                 null,null);
-        return new ContactCursorWrapper();
+        return new ContactDbSchema();
     }
 
     public List<Contact> getContacts(){
         List<Contact> contacts = new ArrayList<>();
-        ContactCursorWrapper cursor = queryCrimes(null, null);
+        ContactDbSchema cursor = queryCrimes(null, null);
 
         try{
 
