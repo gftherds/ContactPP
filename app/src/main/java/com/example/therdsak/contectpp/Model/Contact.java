@@ -7,9 +7,5 @@ import com.example.therdsak.contectpp.R;
 
 public class Contact extends AppCompatActivity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contact);
-    }
+
 }
