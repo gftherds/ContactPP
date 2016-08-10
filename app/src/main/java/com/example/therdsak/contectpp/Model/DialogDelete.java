@@ -35,7 +35,7 @@ public class DialogDelete extends DialogFragment {
                 "Yes",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
+
                     }
                 });
 

@@ -70,7 +70,7 @@ public class ContactEditFragment extends Fragment {
 
         ContactLab contactLab = ContactLab.getInstance(getActivity());
         UUID contactID = (UUID) getArguments().getSerializable(CONTACT_ID);
-        contact = ContactLab.getInstance(getActivity()).getContacts().get(getId());//TODO VIEW AGAIN
+        contact = ContactLab.getInstance(getActivity()).getContactById(contactID);
 
 
         photoFile = ContactLab.getInstance(getActivity()).getPhotoFile(contact);
@@ -92,7 +92,7 @@ public class ContactEditFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                contact.getContactName(s.toString()); //TODO now
+                contact.setContactName(s.toString()); //TODO now
                 updateContact();
             }
 
@@ -103,7 +103,7 @@ public class ContactEditFragment extends Fragment {
         });
 
         editPhone = (EditText) v.findViewById(R.id.contact_phone);
-        editPhone.setText(contact.getTitle());
+        editPhone.setText(contact.getContactName());
         editPhone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -112,7 +112,7 @@ public class ContactEditFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                contact.setTitle(s.toString());
+                contact.setContactName(s.toString());
                 updateContact();
             }
 
@@ -123,7 +123,7 @@ public class ContactEditFragment extends Fragment {
         });
 
         editEmail = (EditText) v.findViewById(R.id.contact_e_mail);
-        editEmail.setText(contact.getTitle());
+        editEmail.setText(contact.getContactName());
         editEmail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -132,7 +132,7 @@ public class ContactEditFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                contact.setTitle(s.toString());
+                contact.setContactName(s.toString());
                 updateContact();
             }
 
@@ -147,7 +147,7 @@ public class ContactEditFragment extends Fragment {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ContactLab.getInstance(getActivity()).deleteContact(contact.getId());
+                ContactLab.getInstance(getActivity()).deleteContact(contact.getContactId());
                 getActivity().finish();
 
                 FragmentManager fm = getFragmentManager();
@@ -199,7 +199,7 @@ public class ContactEditFragment extends Fragment {
             }
         });
 
-
+        updatePhotoView();
         return v;
     }
 
@@ -211,7 +211,7 @@ public class ContactEditFragment extends Fragment {
     }
 
     private void updateContact() {
-        ContactLab.getInstance(getActivity().updateContact(Contact));
+        ContactLab.getInstance(getActivity()).updateContact(contact);
 //        if(ContactEditFragment.this.isResumed())
 
     }
@@ -221,7 +221,7 @@ public class ContactEditFragment extends Fragment {
             photoView.setImageDrawable(null);
 
         } else {
-            Bitmap bitmap = ContactPictureUnit.getScaleBitmap(photoFile.getpath(), getActivity());
+            Bitmap bitmap = ContactPictureUnit.getScaleBitmap(photoFile.getPath(), getActivity());
 
             photoView.setImageBitmap(bitmap);
         }

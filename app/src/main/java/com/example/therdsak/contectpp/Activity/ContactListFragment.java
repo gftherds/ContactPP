@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -61,12 +62,35 @@ public class ContactListFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.contact_menu_add, menu);
+
+//        MenuItem menuItem = menu.findItem(R.id.menu_item_new_contact);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_item_new_contact :
+
+                Contact contact = new Contact();
+                ContactLab.getInstance(getActivity()).addContact(contact);
+
+                updateUI();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
 
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
     }
 
     @Override

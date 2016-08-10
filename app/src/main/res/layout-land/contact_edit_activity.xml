@@ -21,8 +21,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:id="@+id/contact_delete"
-        android:layout_width="150dp"
-        android:layout_height="100dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="16dp"
         android:text="Delete"/>
