@@ -4,10 +4,10 @@ package com.example.therdsak.contectpp.Model;
 import java.util.UUID;
 
 public class Contact {
-    private UUID contactId;
-    private String contactName;
-    private String contactTelNumber;
-    private String contactEmail;
+    protected UUID contactId;
+    protected String contactName;
+    protected String contactTelNumber;
+    protected String contactEmail;
 
     public Contact(){
         this(UUID.randomUUID());
