@@ -7,8 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 
 
+import com.example.therdsak.contectpp.DataBase.ContactBaseHelper;
 import com.example.therdsak.contectpp.DataBase.ContactCursorWrapper;
-import com.example.therdsak.contectpp.DataBase.ContactDbSchema;
+import com.example.therdsak.contectpp.DataBase.ContactDbSchema.ContactTable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,9 +21,9 @@ import java.util.UUID;
  * Created by Therdsak on 8/9/2016.
  */
 public class ContactLab {
-
     private static ContactLab instance;
 
+    //////////////////////////////////////////// STATIC ZONE ////////////////////////////////////////////////
     public static ContactLab getInstance(Context context){
         if(instance == null){
             instance = new ContactLab(context);
@@ -32,29 +33,32 @@ public class ContactLab {
 
     public static ContentValues getContentValues(Contact contact){
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ContactDbSchema.ContactTable.Cols.UUID, contact.getContactId().toString());
-        contentValues.put(ContactDbSchema.ContactTable.Cols.NAME, contact.getContactName());
-        contentValues.put(ContactDbSchema.ContactTable.Cols.NUMBER_PHONE, contact.getContactTelNumber());
-        contentValues.put(ContactDbSchema.ContactTable.Cols.EMAIL, contact.getContactEmail());
+        contentValues.put(ContactTable.Cols.UUID, contact.getContactId().toString());
+        contentValues.put(ContactTable.Cols.NAME, contact.getContactName());
+        contentValues.put(ContactTable.Cols.NUMBER_PHONE, contact.getContactTelNumber());
+        contentValues.put(ContactTable.Cols.EMAIL, contact.getContactEmail());
         return contentValues;
     }
 
+    //////////////////////////////////////////// ??? METHOD ??? ////////////////////////////////////////////////
     private Context context;
     private SQLiteDatabase database;
 
     private ContactLab(Context context){
         this.context = context.getApplicationContext();
+        ContactBaseHelper crimeBaseHelper = new ContactBaseHelper(this.context);
+        database = crimeBaseHelper.getWritableDatabase();
     }
 
     public ContactCursorWrapper queryContact(String whereClause, String[] whereArgs){
-        Cursor cursor = database.query(null, null, whereClause, whereArgs,null,
+        Cursor cursor = database.query(ContactTable.NAMEDB, null, whereClause, whereArgs,null,
                 null,null);
         return new ContactCursorWrapper(cursor);
     }
 
 
     public Contact getContactById(UUID uuid){
-        ContactCursorWrapper cursor = queryContact(ContactDbSchema.ContactTable.Cols.UUID + " = ? ", new String[] { uuid.toString()});
+        ContactCursorWrapper cursor = queryContact(ContactTable.Cols.UUID + " = ? ", new String[] { uuid.toString()});
         try{
             if(cursor.getCount() == 0){
                 return null;
@@ -70,7 +74,6 @@ public class ContactLab {
     public List<Contact> getContacts(){
         List<Contact> contacts = new ArrayList<>();
         ContactCursorWrapper cursor = queryContact(null, null);
-
         try{
             cursor.moveToFirst();
             while ((!cursor.isAfterLast())) {
@@ -85,11 +88,11 @@ public class ContactLab {
 
     public void addContact(Contact contact){
         ContentValues contentValues = getContentValues(contact);
-        database.insert(ContactDbSchema.ContactTable.NAMEDB, null, contentValues);
+        database.insert(ContactTable.NAMEDB, null, contentValues);
     }
 
     public  void deleteContact(UUID contactId){
-        database.delete(ContactDbSchema.ContactTable.NAMEDB, ContactDbSchema.ContactTable.Cols.UUID + " = ? ",
+        database.delete(ContactTable.NAMEDB, ContactTable.Cols.UUID + " = ? ",
                 new String[]{contactId.toString()});
     }
 
@@ -99,7 +102,7 @@ public class ContactLab {
         String uuidStr = contact.getContactId().toString();
         ContentValues contentValues = getContentValues(contact);
 
-        database.update(ContactDbSchema.ContactTable.NAMEDB, contentValues, ContactDbSchema.ContactTable.Cols.UUID + " = ? ", new String[]{ uuidStr });
+        database.update(ContactTable.NAMEDB, contentValues, ContactTable.Cols.UUID + " = ? ", new String[]{ uuidStr });
 
     }
 

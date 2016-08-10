@@ -24,8 +24,8 @@ style="?android:listSeparatorTextViewStyle">
         <ImageView
             android:layout_centerVertical="true"
             android:id="@+id/image_list_view"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
             android:layout_gravity="center"
             android:scaleType="centerInside"
             android:background="@android:color/darker_gray"

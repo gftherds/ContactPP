@@ -14,42 +14,29 @@ public class Contact {
     }
 
     public Contact(UUID newContactId){
-        contactId = newContactId;
+        this.contactId = newContactId;
     }
 
     public UUID getContactId() {
         return contactId;
     }
-
-    public void setContactId(UUID contactId) {
-        this.contactId = contactId;
-    }
-
+    public String getPhotoFileName() {return "IMG_" + getContactId().toString() + ".jpg";}
     public String getContactName() {
         return contactName;
     }
-
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
-    }
-
     public String getContactTelNumber() {
         return contactTelNumber;
     }
-
-    public void setContactTelNumber(String contactTelNumber) {
-        this.contactTelNumber = contactTelNumber;
-    }
-
     public String getContactEmail() {
         return contactEmail;
     }
 
+    public void setContactId(UUID contactId) {
+        this.contactId = contactId;
+    }
+    public void setContactName(String contactName) {this.contactName = contactName;}
+    public void setContactTelNumber(String contactTelNumber) {this.contactTelNumber = contactTelNumber;}
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
-    }
-
-    public String getPhotoFileName() {
-        return "IMG_" + getContactId().toString() + ".jpg";
     }
 }

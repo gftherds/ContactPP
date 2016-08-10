@@ -1,5 +1,6 @@
 package com.example.therdsak.contectpp.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -32,7 +33,7 @@ import java.util.UUID;
 /**
  * Created by Therdsak on 8/9/2016.
  */
-public class ContactEditFragment extends Fragment {
+public class ContactEditFragment extends Fragment  {
     private static final String CONTACT_ID = "ContactEditFragment.CONTACT_ID";
     private static final String DIALOG_DELETE = "ContactEditFragment.DIALOG_DELETE";
     private static final int REQUEST_CAPTURE_PHOTO = 1234;
@@ -42,22 +43,37 @@ public class ContactEditFragment extends Fragment {
 
     }
 
-    EditText editText;
-    EditText editPhone;
-    EditText editEmail;
-    Button deleteButton;
-    ImageButton photoButton;
-    ImageView photoView;
-    String deletestring;
+    private EditText editText;
+    private EditText editPhone;
+    private EditText editEmail;
+    private Button deleteButton;
+    private ImageButton photoButton;
+    private ImageView photoView;
+    private String deletestring;
+    protected Callback callback;
+    protected Contact contact;
 
 
-    private Contact contact;
+    public interface Callback{
+        void onContactUpdate();
+        void onContactDelete();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        callback = (Callback) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callback = null;
+    }
 
     public static ContactEditFragment newInstance(UUID contactId) {
         Bundle args = new Bundle();
         args.putSerializable(CONTACT_ID, contactId);
-
-
         ContactEditFragment contactEditFragment = new ContactEditFragment();
         contactEditFragment.setArguments(args);
         return contactEditFragment;
@@ -79,7 +95,7 @@ public class ContactEditFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.contact_edit_activity, container, false);
 
         editText = (EditText) v.findViewById(R.id.contact_name);
@@ -112,7 +128,7 @@ public class ContactEditFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                contact.setContactName(s.toString());
+                contact.setContactTelNumber(s.toString());
                 updateContact();
             }
 
@@ -132,7 +148,7 @@ public class ContactEditFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                contact.setContactName(s.toString());
+                contact.setContactEmail(s.toString());
                 updateContact();
             }
 
@@ -151,9 +167,8 @@ public class ContactEditFragment extends Fragment {
                 getActivity().finish();
 
                 FragmentManager fm = getFragmentManager();
-                DialogDelete dialogDelete = DialogDelete.newInstance(deletestring);
+                DialogDelete dialogDelete = DialogDelete.newInstance(contact.getContactId());
                 dialogDelete.show(fm, DIALOG_DELETE);
-
 
             }
         });
@@ -212,6 +227,7 @@ public class ContactEditFragment extends Fragment {
 
     private void updateContact() {
         ContactLab.getInstance(getActivity()).updateContact(contact);
+
 //        if(ContactEditFragment.this.isResumed())
 
     }
@@ -219,7 +235,6 @@ public class ContactEditFragment extends Fragment {
     private void updatePhotoView() {
         if (photoView == null || !photoFile.exists()) {
             photoView.setImageDrawable(null);
-
         } else {
             Bitmap bitmap = ContactPictureUnit.getScaleBitmap(photoFile.getPath(), getActivity());
 
